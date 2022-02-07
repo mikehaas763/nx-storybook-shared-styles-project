@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@testsharedstyles/core-styles": ["libs/core-styles/src/index.ts"],
+      "@testsharedstyles/libo": ["libs/libo/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

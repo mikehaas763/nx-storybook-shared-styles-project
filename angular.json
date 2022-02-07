@@ -19,6 +19,11 @@
             "inlineStyleLanguage": "scss",
             "assets": ["apps/appo/src/favicon.ico", "apps/appo/src/assets"],
             "styles": ["apps/appo/src/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "libs/core-styles/src/lib"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
@@ -114,6 +119,110 @@
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["apps/appo-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "core-styles": {
+      "root": "libs/core-styles",
+      "sourceRoot": "libs/core-styles/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/core-styles/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/core-styles"],
+          "options": {
+            "jestConfig": "libs/core-styles/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "libo": {
+      "projectType": "library",
+      "root": "libs/libo",
+      "sourceRoot": "libs/libo/src",
+      "prefix": "testsharedstyles",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/libo"],
+          "options": {
+            "jestConfig": "libs/libo/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/libo/src/**/*.ts",
+              "libs/libo/src/**/*.html"
+            ]
+          }
+        },
+        "storybook": {
+          "builder": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "port": 4400,
+            "config": {
+              "configFolder": "libs/libo/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "outputPath": "dist/storybook/libo",
+            "config": {
+              "configFolder": "libs/libo/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        }
+      }
+    },
+    "libo-e2e": {
+      "root": "apps/libo-e2e",
+      "sourceRoot": "apps/libo-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/libo-e2e/cypress.json",
+            "devServerTarget": "libo:storybook"
+          },
+          "configurations": {
+            "ci": {
+              "devServerTarget": "libo:storybook:ci"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/libo-e2e/**/*.{js,ts}"]
           }
         }
       }
